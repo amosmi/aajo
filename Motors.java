@@ -9,7 +9,7 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.robotics.RegulatedMotor;
 
-public class Motors extends Thread {
+public class Motors {
 	private RegulatedMotor right;
 	private RegulatedMotor left;
 	private RegulatedMotor middle;
@@ -22,42 +22,46 @@ public class Motors extends Thread {
 
 	}
 
-	public void liikkeet(int komento) {
-		switch (lukija.annaKomento()) {
-		case 5:
-			this.eteenpain();
-			LCD.clear();
-			LCD.drawString("Eteenpain", 0, 0);
-			break;
-		case 8:
-			this.taaksepain();
-			LCD.clear();
-			LCD.drawString("Taaksepain", 0, 0);
-			break;
-		case 2:
-			this.seis();
-			LCD.clear();
-			LCD.drawString("SEIS", 0, 0);
-			break;
-		case 4:
-			if (komento == 1) {
-				this.golf();
-			} else if (komento == 2) {
-				this.ammuKuula();
-			}
-			break;
-		case 1:
-			this.vasemmalle();
-			LCD.clear();
-			LCD.drawString("Kaantyy oikealle", 0, 0);
-			break;
-		case 3:
-			this.oikealle();
-			LCD.clear();
-			LCD.drawString("Kaantyy vasemmalle", 0, 0);
-			break;
-		}
+	public void liikkeet(int valinta) {
 
+		while (!Button.ESCAPE.isUp()) {
+			switch (lukija.annaKomento()) {
+			case 5:
+				this.eteenpain();
+				LCD.clear();
+				LCD.drawString("Eteenpain", 0, 0);
+				break;
+			case 8:
+				this.taaksepain();
+				LCD.clear();
+				LCD.drawString("Taaksepain", 0, 0);
+				break;
+			case 2:
+				this.seis();
+				LCD.clear();
+				LCD.drawString("SEIS", 0, 0);
+				break;
+			case 4:
+				if (valinta == 1) {
+					this.golf();
+				} else if (valinta == 2) {
+					this.ammuKuula();
+				}
+				break;
+			case 1:
+				this.vasemmalle();
+				LCD.clear();
+				LCD.drawString("Kaantyy vasemmalle", 0, 0);
+				break;
+			case 3:
+				this.oikealle();
+				LCD.clear();
+				LCD.drawString("Kaantyy oikealle", 0, 0);
+				break;
+			}
+			this.sammuta();
+
+		}
 	}
 
 	public void taaksepain() {
@@ -68,7 +72,7 @@ public class Motors extends Thread {
 
 	public void eteenpain() {
 
-		this.left.backward();
+		this.left.backward(); // moottorien oma suunta on taaksepain
 		this.right.backward();
 	}
 
@@ -107,8 +111,11 @@ public class Motors extends Thread {
 	public void sammuta() {
 		this.left.stop();
 		this.right.stop();
+		this.middle.stop();
 		this.left.close();
 		this.right.close();
+		this.middle.close();
+
 	}
 
 }

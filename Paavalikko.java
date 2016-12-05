@@ -7,7 +7,7 @@ import lejos.hardware.sensor.EV3IRSensor;
 import lejos.utility.Delay;
 
 public class Paavalikko {
-	private BrickLukija saadot;
+	private BrickLukija bricklukija;
 	private Tekstivalikko tekstivalikko;
 	private String[] valikko;
 	private int valitsin;
@@ -16,11 +16,10 @@ public class Paavalikko {
 	private Soittotila soittotila;
 	private Motors moottorit;
 
-	public Paavalikko() {
+	public Paavalikko(IRLukija lukija, BrickLukija bricklukija) {
 
-		this.irsensori = new EV3IRSensor(SensorPort.S1);
-		this.lukija = new IRLukija(irsensori);
-		this.saadot = new BrickLukija();
+		this.lukija = lukija;
+		this.bricklukija = bricklukija;
 		valikko = new String[4];
 		valikko[0] = "Ampumatila";
 		valikko[1] = "Golffitila";
@@ -32,13 +31,12 @@ public class Paavalikko {
 	}
 
 	public void valikko() {
-		lukija.start();
-		saadot.start();
+		
 		int nappainkoodi;
 		boolean lopeta = false;
 		tekstivalikko.esitaValikko();
 		do {
-			nappainkoodi = saadot.annaKoodi();
+			nappainkoodi = bricklukija.annaKoodi();
 			switch (nappainkoodi) {
 			case Button.ID_DOWN:
 				tekstivalikko.alas();
@@ -75,8 +73,6 @@ public class Paavalikko {
 			}
 
 		} while (!lopeta);
-		saadot.lopeta();
-		lukija.lopeta();
 		LCD.drawString("Suljetaan", 0, 0);
 		Delay.msDelay(1337);
 		irsensori.close();
