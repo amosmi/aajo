@@ -15,16 +15,17 @@ public class Motors {
 	private RegulatedMotor middle;
 	private IRLukija lukija;
 
-	public Motors() {
+	public Motors(IRLukija lukija) {
 		this.right = new EV3LargeRegulatedMotor(MotorPort.D);
 		this.left = new EV3LargeRegulatedMotor(MotorPort.B);
 		this.middle = new EV3MediumRegulatedMotor(MotorPort.A);
+		this.lukija = lukija;
 
 	}
 
 	public void liikkeet(int valinta) {
 
-		while (!Button.ESCAPE.isUp()) {
+		while (!Button.ESCAPE.isDown()) {
 			switch (lukija.annaKomento()) {
 			case 5:
 				this.eteenpain();
@@ -59,9 +60,9 @@ public class Motors {
 				LCD.drawString("Kaantyy oikealle", 0, 0);
 				break;
 			}
-			this.sammuta();
-
 		}
+		LCD.drawString("heh", 0, 0);
+		this.sammuta();
 	}
 
 	public void taaksepain() {

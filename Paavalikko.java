@@ -16,10 +16,11 @@ public class Paavalikko {
 	private Soittotila soittotila;
 	private Motors moottorit;
 
-	public Paavalikko(IRLukija lukija, BrickLukija bricklukija) {
-
-		this.lukija = lukija;
-		this.bricklukija = bricklukija;
+	public Paavalikko() {
+		
+		this.irsensori = new EV3IRSensor(SensorPort.S1);
+		this.lukija = new IRLukija(irsensori);
+		this.bricklukija = new BrickLukija();
 		valikko = new String[4];
 		valikko[0] = "Ampumatila";
 		valikko[1] = "Golffitila";
@@ -27,11 +28,15 @@ public class Paavalikko {
 		valikko[3] = "Lopeta";
 		tekstivalikko = new Tekstivalikko("Valikko", valikko);
 		valitsin = tekstivalikko.annaKohta();
+		moottorit = new Motors(this.lukija);
+		soittotila = new Soittotila(this.lukija,this.bricklukija);
 
 	}
 
 	public void valikko() {
 		
+		this.lukija.start();
+		this.bricklukija.start();
 		int nappainkoodi;
 		boolean lopeta = false;
 		tekstivalikko.esitaValikko();
@@ -53,14 +58,17 @@ public class Paavalikko {
 				case 0:
 					tekstivalikko.tyhjennaNaytto();
 					this.moottorit.liikkeet(1);
+					this.tekstivalikko.esitaValikko();
 					break;
 				case 1:
 					tekstivalikko.tyhjennaNaytto();
 					this.moottorit.liikkeet(2);
+					this.tekstivalikko.esitaValikko();
 					break;
 				case 2:
 					tekstivalikko.tyhjennaNaytto();
 					this.soittotila.suorita();
+					this.tekstivalikko.esitaValikko();
 
 					break;
 				case 3:
@@ -75,6 +83,8 @@ public class Paavalikko {
 		} while (!lopeta);
 		LCD.drawString("Suljetaan", 0, 0);
 		Delay.msDelay(1337);
+		lukija.lopeta();
+		bricklukija.lopeta();
 		irsensori.close();
 
 	}
