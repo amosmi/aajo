@@ -61,8 +61,6 @@ public class Motors {
 				break;
 			}
 		}
-		LCD.drawString("heh", 0, 0);
-		this.sammuta();
 	}
 
 	public void taaksepain() {
@@ -93,11 +91,11 @@ public class Motors {
 	}
 
 	public void golf() {
-		this.middle.setSpeed(500);
-		this.middle.rotate(-90);
+		this.middle.setSpeed(100);
+		this.middle.rotate(-45);
 		this.middle.setSpeed(1500);
-		this.middle.rotate(135);
-		this.middle.setSpeed(500);
+		this.middle.rotate(90);
+		this.middle.setSpeed(100);
 		this.middle.rotate(-45);
 	}
 

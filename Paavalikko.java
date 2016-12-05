@@ -57,12 +57,12 @@ public class Paavalikko {
 				switch (this.valitsin) {
 				case 0:
 					tekstivalikko.tyhjennaNaytto();
-					this.moottorit.liikkeet(1);
+					this.moottorit.liikkeet(2);
 					this.tekstivalikko.esitaValikko();
 					break;
 				case 1:
 					tekstivalikko.tyhjennaNaytto();
-					this.moottorit.liikkeet(2);
+					this.moottorit.liikkeet(1);
 					this.tekstivalikko.esitaValikko();
 					break;
 				case 2:
@@ -86,6 +86,7 @@ public class Paavalikko {
 		lukija.lopeta();
 		bricklukija.lopeta();
 		irsensori.close();
+		moottorit.sammuta();
 
 	}
 
