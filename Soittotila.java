@@ -27,7 +27,7 @@ public class Soittotila {
 		valikko[0] = "Piano";
 		valikko[1] = "Huilu";
 		valikko[2] = "Xylofoni";
-		valikko[3] = "Lopeta";
+		valikko[3] = "Palaa";
 		tekstivalikko = new Tekstivalikko("Soittaja",valikko);
 		valitsin =tekstivalikko.annaKohta();
 		
@@ -80,7 +80,7 @@ public class Soittotila {
 			 }
 		
 		}while (!lopeta);
-		LCD.drawString("lopetetaan...", 0, 0);
+		LCD.drawString("Palataan...", 0, 0);
 		Delay.msDelay(1000);
 		
 	}
