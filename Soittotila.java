@@ -1,4 +1,4 @@
-package musa;
+package aajobotti;
 
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
@@ -7,11 +7,17 @@ import lejos.hardware.sensor.EV3IRSensor;
 import lejos.utility.Delay;
 import lejos.utility.TextMenu;
 
+/**
+ * Soittotila vas
+ * @author JuhaVuokko
+ *
+ */
+
 public class Soittotila {
 	
 	private EV3IRSensor irsensori;
 	private IRLukija lukija;
-	private BrickLukija saadot;
+	private BrickLukija bricklukija;
 	private Soittaja soittaja;
 	private Tekstivalikko tekstivalikko;
 	private String[] valikko;
@@ -20,12 +26,12 @@ public class Soittotila {
 	public Soittotila(IRLukija lukija, BrickLukija bricklukija){
 	
 		this.lukija = lukija;
-		this.saadot = bricklukija;
+		this.bricklukija = bricklukija;
 		this.soittaja = new Soittaja(60);
 		soittaja.asetaInstrumentti(0);
 		valikko = new String[4];
 		valikko[0] = "Piano";
-		valikko[1] = "Huilu";
+		valikko[1] = "Viulu";
 		valikko[2] = "Xylofoni";
 		valikko[3] = "Palaa";
 		tekstivalikko = new Tekstivalikko("Soittaja",valikko);
@@ -42,7 +48,7 @@ public class Soittotila {
 		tekstivalikko.esitaValikko();
 		
 		 do{
-			 nappainkoodi = saadot.annaKoodi();
+			 nappainkoodi = bricklukija.annaKoodi();
 			 switch(nappainkoodi){
 			 case Button.ID_DOWN:
 				 tekstivalikko.alas();
@@ -58,17 +64,17 @@ public class Soittotila {
 			 	switch (this.valitsin){
 			 	case 0:
 			 		tekstivalikko.tyhjennaNaytto();
-			 		soitintila(0,100);
+			 		soitintila(0,100,valikko[0]);
 			 		tekstivalikko.esitaValikko();
 			 		break;
 			 	case 1:
 			 		tekstivalikko.tyhjennaNaytto();
-			 		soitintila(1,200);
+			 		soitintila(1,200,valikko[1]);
 			 		tekstivalikko.esitaValikko();
 			 		break;
 			 	case 2:
 			 		tekstivalikko.tyhjennaNaytto();
-			 		soitintila(2,10);
+			 		soitintila(2,10,valikko[2]);
 			 		tekstivalikko.esitaValikko();
 			 		break;
 			 	case 3:
@@ -80,24 +86,24 @@ public class Soittotila {
 			 }
 		
 		}while (!lopeta);
-		LCD.drawString("Palataan...", 0, 0);
-		Delay.msDelay(1000);
+		
 		
 	}
 	
-	public void soitintila(int soitinvalinta, int kesto){
+	public void soitintila(int soitinvalinta, int kesto, String soitin){
 		
 		int komento = 0;
 		int saatoKomento = 0;
 		boolean lopeta = false;
 		soittaja.asetaInstrumentti(soitinvalinta);
 		soittaja.asetaKesto(kesto);
+		this.paivitaNaytto(soitin, soittaja.annaAanenVoimakkuus());
 		
 		
 		do{
 			
 			komento = lukija.annaKomento();
-			saatoKomento = saadot.annaKoodi();
+			saatoKomento = bricklukija.annaKoodi();
 			switch (komento){
 			case 1:
 				soittaja.soita(200);
@@ -130,22 +136,29 @@ public class Soittotila {
 				soittaja.soita(2000);
 				break;
 			
-			}
-		 
+			}	 
 			switch(saatoKomento){
 		
-			case Button.ID_LEFT:
+			case Button.ID_DOWN:
 				soittaja.muutaAanenVoimakkuutta(-10);
+				this.paivitaNaytto(soitin, soittaja.annaAanenVoimakkuus());
 				break;
-			case Button.ID_RIGHT:
+			case Button.ID_UP:
 				soittaja.muutaAanenVoimakkuutta(10);
+				this.paivitaNaytto(soitin, soittaja.annaAanenVoimakkuus());
 				break;
 			case Button.ID_ESCAPE:
+				LCD.clear();
 				lopeta = true;
 				break;
 			}
 		
 		} while (!lopeta);
+	}
+	
+	public void paivitaNaytto(String soitin, int aanenvoimakkuus){
+		LCD.drawString(soitin, 0, 0);
+		LCD.drawString("Vol: "+ aanenvoimakkuus, 0, 1);
 	}
 		
 

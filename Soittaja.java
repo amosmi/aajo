@@ -1,4 +1,4 @@
-package musa;
+package aajobotti;
 
 import lejos.hardware.Sound;
 
