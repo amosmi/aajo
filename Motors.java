@@ -1,4 +1,12 @@
-package musa;
+/**
+ * <h1>Motors<h1>
+ * Moottori luokka hoita kaikki robootin liikkeen 
+ * 
+ *@author Atte Holm
+ *@version 1.0
+ *@since 2016-12-14
+ */
+package aajobotti;
 
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
@@ -14,6 +22,10 @@ public class Motors {
 	private RegulatedMotor left;
 	private RegulatedMotor middle;
 	private IRLukija lukija;
+	/**
+	 * Konstruktori luo jokaiselle moottorille olion
+	 * @param lukija Kaukoohjaimen n‰pp‰imien lukemiseksi
+	 */
 
 	public Motors(IRLukija lukija) {
 		this.right = new EV3LargeRegulatedMotor(MotorPort.D);
@@ -22,6 +34,13 @@ public class Motors {
 		this.lukija = lukija;
 
 	}
+	/**
+	 * Robootin liikelogiikka. kaukoohjaimella siirryt‰‰n eteenp‰in, taaksep‰in 
+	 * vasemmalle ja oikealle.
+	 * @param valinta ampumatilan ja golfitilan toiminnot ovat hyvin samat joten 
+	 * t‰m‰ parametri valitsee kumman toiminnoista robootti tekee
+	 * 
+	 */
 
 	public void liikkeet(int valinta) {
 
@@ -45,6 +64,7 @@ public class Motors {
 			case 4:
 				if (valinta == 1) {
 					this.golf();
+					
 				} else if (valinta == 2) {
 					this.ammuKuula();
 				}
@@ -62,33 +82,52 @@ public class Motors {
 			}
 		}
 	}
+	/**
+	 * Robootti menee taaksep‰in
+	 */
 
 	public void taaksepain() {
 
 		this.left.forward();
 		this.right.forward();
 	}
+	/**
+	 * Robootti menee eteenp‰in
+	 */
 
 	public void eteenpain() {
 
 		this.left.backward(); // moottorien oma suunta on taaksepain
 		this.right.backward();
 	}
+	/**
+	 * Robootti k‰‰ntyy oikealle
+	 */
 
 	public void oikealle() {
 		this.left.forward();
 		this.right.backward();
 	}
+	/**
+	 * Robootti k‰‰ntyy vasemmmalle
+	 */
 
 	public void vasemmalle() {
 		this.right.forward();
 		this.left.backward();
 	}
+	
+	/**
+	 * Robootti pys‰htyy
+	 */
 
 	public void seis() {
 		this.left.stop(true);
 		this.right.stop(true);
 	}
+	/**
+	 * Middle moottorin golfiliike
+	 */
 
 	public void golf() {
 		this.middle.setSpeed(100);
@@ -98,6 +137,10 @@ public class Motors {
 		this.middle.setSpeed(100);
 		this.middle.rotate(-45);
 	}
+	
+	/**
+	 * Middle moottorin ampumaliike
+	 */
 
 	public void ammuKuula() {
 		this.middle.setSpeed(1500);
@@ -106,6 +149,10 @@ public class Motors {
 		this.middle.rotate(90);
 
 	}
+	
+	/**
+	 * Moottorit pys‰ytet‰‰n ja sammutetaan
+	 */
 
 	public void sammuta() {
 		this.left.stop();
