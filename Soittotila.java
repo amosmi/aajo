@@ -54,7 +54,8 @@ public class Soittotila {
 	}
 	
 	/**
-	 * Tämä metodi hoitaa soittotilan. Tämä aikaansaa valikon esittämisen brickissa. Kaikki toiminnallisuudet käynnistyvät myös.
+	 * Tämä metodi hoitaa soittotilan. Tämä aikaansaa valikon esittämisen brickissa. Kaikki toiminnallisuudet 
+	 * käynnistyvät myös. Tämä metodi käyttää soitintila-metodia apumetodina. 
 	 */
 	public void suorita(){
 	
